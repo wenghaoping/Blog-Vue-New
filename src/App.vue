@@ -37,7 +37,7 @@
         methods: {},
         created () {},
         watch: {
-            '$route' (to, from) {
+            '$route' (to) {
                 if (to) {
                     this.transitionName = 'slide-right';
                 } else {
