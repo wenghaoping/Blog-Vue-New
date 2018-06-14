@@ -6,16 +6,19 @@
     body {
         -webkit-overflow-scrolling: touch;
     }
-
 </style>
 
 <template>
     <div id="app">
+        <!--顶部-->
         <topHeader></topHeader>
-        <keep-alive include="index">
-            <router-view v-if="$route.meta.keepAlive"></router-view>
-        </keep-alive>
-        <router-view v-if="!$route.meta.keepAlive"></router-view>
+        <transition mode="out-in"
+                    name="custom-classes-transition"
+                    enter-active-class="pt-page-moveFromRight"
+                    leave-active-class="pt-page-moveToLeft">
+          <router-view></router-view>
+        </transition>
+        <!--底部-->
         <footered></footered>
     </div>
 </template>
@@ -26,9 +29,7 @@
 
     export default {
         data () {
-            return {
-                transitionName: 'slide-left'
-            };
+            return {};
         },
         components: {
             footered,
@@ -36,14 +37,6 @@
         },
         methods: {},
         created () {},
-        watch: {
-            '$route' (to) {
-                if (to) {
-                    this.transitionName = 'slide-right';
-                } else {
-                    this.transitionName = 'slide-left';
-                }
-            }
-        }
+        watch: {}
     };
 </script>

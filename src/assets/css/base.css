@@ -35,22 +35,39 @@ html, body {
   display: none;
 }
 
-.block {
-  display: block;
+.positionFixed{
+  position: fixed;
+}
+.innImg img{
+  width: 100%;
+}
+
+.position_auto{
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.position_center_auto{
+  left: 33%;
 }
 
 .relative {
   position: relative;
+  -webkit-position: relative;
 }
 
 .absolute {
   position: absolute;
+  -webkit-position: absolute;
 }
 
 .positionFixed{
+  -webkit-position: fixed;
   position: fixed;
 }
-
 .m_auto {
   margin: auto;
 }

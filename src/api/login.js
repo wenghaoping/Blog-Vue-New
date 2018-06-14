@@ -1,9 +1,9 @@
 import request from 'utils/request';
 
-export function get(opts) {
+export function signup(data) {
     return request({
-        url: '/get',
+        url: '/signup',
         method: 'post',
-        opts: opts
+        data
     });
 }

@@ -59,10 +59,10 @@
 <template>
     <div class="index">
         <nav>
-            <span class="header"><img src="../../assets/images/header.jpg"></span>
+            <span class="header" @click="$router.push({name: 'sign-in'});"><img src="../../assets/images/header.jpg"></span>
             <router-link class="router-link active" to="/">首页</router-link>
-            <router-link  class="router-link" to="/product">留言版</router-link>
-            <router-link  class="router-link" to="/contact">聊天入口</router-link>
+            <router-link  class="router-link" to="/guestbook">留言版</router-link>
+            <router-link  class="router-link" to="/chating">聊天入口</router-link>
         </nav>
     </div>
 </template>
@@ -71,11 +71,10 @@
     export default {
         name: 'index',
         data () {
-            return {
-                msg: 'Welcome to Your Vue.js App'
-            };
+            return {};
         },
-        components: {}
+        components: {},
+        methods: {}
     };
 </script>
 
