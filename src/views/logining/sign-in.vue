@@ -81,9 +81,9 @@
           submit (formName) {
               this.$refs[formName].validate((valid) => {
                   if (valid) {
-                      alert('submit!');
+                      alert('submit!'); // eslint-disable-line
                   } else {
-                      console.log('error submit!!');
+                      console.log('error submit!!'); // eslint-disable-line
                       return false;
                   }
               });

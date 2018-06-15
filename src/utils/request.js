@@ -21,7 +21,7 @@ service.interceptors.request.use((config) => {
     }
     return config;
 }, (error) => {
-    console.log('错误的传参');
+    console.log('错误的传参'); // eslint-disable-line
     return Promise.reject(error);
 });
 
@@ -32,8 +32,8 @@ service.interceptors.response.use((res) => {
     }
     return res;
 }, (error) => {
-    console.log(error);
-    console.log('网络异常');
+    console.log(error); // eslint-disable-line
+    console.log('网络异常'); // eslint-disable-line
     return Promise.reject(error);
 });
 

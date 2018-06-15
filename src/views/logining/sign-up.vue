@@ -2,6 +2,29 @@
     .logining {
       max-width: 300px;
       padding: 35px 35px 15px 35px;
+      .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+      }
+      .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+      }
+      .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 130px;
+        height: 130px;
+        line-height: 130px;
+        text-align: center;
+      }
+      .avatar {
+        width: 130px;
+        height: 130px;
+        display: block;
+      }
     }
 </style>
 
@@ -39,10 +62,22 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <!--<el-row :span="24">-->
+          <!--<el-col :span="24">-->
+            <!--<el-form-item label="头像" prop="avator">-->
+              <!--<cardUpload ref="upload" :uploadCardAddress="uploadLogoAddress"-->
+                          <!--:uploadDate="uploadDate" :cardplanList="form.avator"-->
+                          <!--@delete="planRemoveLogo" @success="HeadPlanuploadsuccessLogo"-->
+                          <!--:width="150"-->
+                          <!--:size="1048576">-->
+              <!--</cardUpload>-->
+            <!--</el-form-item>-->
+          <!--</el-col>-->
+        <!--</el-row>-->
         <el-row :span="24">
           <el-col :span="24">
             <el-form-item>
-              <el-button type="primary" round class="position_center_auto relative" @click="submit('form')">提交</el-button>
+              <el-button type="primary" round class="position_center_auto relative" @click="submit('form')">注册</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -52,6 +87,8 @@
 
 <script>
   import { checkPhoneNumberForElement } from 'assets/js/utils/validata';
+  import { error, success } from 'assets/js/utils/notification';
+  import cardUpload from 'components/base/cardUpload.vue';
   import Api from 'api';
 
   export default {
@@ -77,11 +114,18 @@
               }
           };
           return {
+              action: `${process.env.BASE_API}/signup`,
               form: {
                   user_name: '',
                   pass_word: '',
                   phone_number: '',
-                  check_pass: ''
+                  check_pass: '',
+                  avator: [
+                      // {
+                      //     image_id: '',
+                      //     url: ''
+                      // }
+                  ]
               },
               rules: {
                   user_name: [
@@ -99,26 +143,53 @@
                       { validator: validatePass2, trigger: 'blur' }
                   ]
               },
-              PhoneRule: { validator: checkPhoneNumberForElement, trigger: 'blur' } // 电话规则
+              PhoneRule: { validator: checkPhoneNumberForElement, trigger: 'blur' }, // 电话规则
+              uploadLogoAddress: `${process.env.BASE_API}/signup` // 上传地址
           };
       },
-      components: {},
+      components: {
+          cardUpload
+      },
+      computed: {
+          uploadDate () {
+              return this.form;
+          }
+      },
       methods: {
           submit (formName) {
               this.$refs[formName].validate((valid) => {
                   if (valid) {
                       this.signup();
                   } else {
-                      console.log('error submit!!');
                       return false;
                   }
               });
           },
           signup () {
               Api.login.signup(this.form).then(res => {
-                  console.log(res);
+                  console.log(res); // eslint-disable-line
+                  if (res.data.code === 200) {
+                      let obj = {
+                          user_name: this.form.user_name,
+                          user_id: res.data.user_id
+                      };
+                      this.$store.dispatch('setLoginData', obj);
+                      localStorage.setItem('users', JSON.stringify(obj));
+                      //JSON.parse(localData);
+                      success(res.data.message);
+                  } else {
+                      error(res.data.message);
+                  }
               });
+              // this.$refs.upload.submit();
           }
+          // HeadPlanuploadsuccessLogo (response) {
+          //     success('上传成功');
+          // },
+          // // 删除活动配图
+          // planRemoveLogo (file, index) {
+          //     console.log(file, index);
+          // }
       },
       mounted () {}
   };

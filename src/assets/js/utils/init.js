@@ -6,7 +6,9 @@ import {
     FormItem,
     Tabs,
     Row,
-    Col
+    Col,
+    Upload,
+    Dialog
 } from 'element-ui';
 
 // 定位初始化
@@ -18,6 +20,8 @@ const elementInit = () => {
     Vue.use(Tabs);
     Vue.use(Row);
     Vue.use(Col);
+    Vue.use(Upload);
+    Vue.use(Dialog);
 };
 
 export default () => {
