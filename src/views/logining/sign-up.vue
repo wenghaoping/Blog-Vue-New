@@ -25,6 +25,29 @@
         height: 130px;
         display: block;
       }
+      .checkImage{
+        display: inline-block;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: pointer;
+        background: #fff;
+        border: 1px solid #dcdfe6;
+        border-color: #dcdfe6;
+        color: #606266;
+        -webkit-appearance: none;
+        text-align: center;
+        box-sizing: border-box;
+        outline: none;
+        margin: 0;
+        transition: .1s;
+        font-weight: 500;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-radius: 4px;
+      }
     }
 </style>
 
@@ -62,18 +85,16 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <!--<el-row :span="24">-->
-          <!--<el-col :span="24">-->
-            <!--<el-form-item label="头像" prop="avator">-->
-              <!--<cardUpload ref="upload" :uploadCardAddress="uploadLogoAddress"-->
-                          <!--:uploadDate="uploadDate" :cardplanList="form.avator"-->
-                          <!--@delete="planRemoveLogo" @success="HeadPlanuploadsuccessLogo"-->
-                          <!--:width="150"-->
-                          <!--:size="1048576">-->
-              <!--</cardUpload>-->
-            <!--</el-form-item>-->
-          <!--</el-col>-->
-        <!--</el-row>-->
+        <el-row :span="24">
+          <el-col :span="24">
+            <el-form-item label="头像" prop="avator">
+              <div>
+                <input type="file" @change="add_img($event)" class="checkImage">
+                <img :src="form.avator" class="avatar">
+              </div>
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-row :span="24">
           <el-col :span="24">
             <el-form-item>
@@ -120,12 +141,7 @@
                   pass_word: '',
                   phone_number: '',
                   check_pass: '',
-                  avator: [
-                      // {
-                      //     image_id: '',
-                      //     url: ''
-                      // }
-                  ]
+                  avator: ''
               },
               rules: {
                   user_name: [
@@ -141,10 +157,16 @@
                   check_pass: [
                       { required: true, message: '请再次输入密码', trigger: 'blur' },
                       { validator: validatePass2, trigger: 'blur' }
+                  ],
+                  avator: [
+                      { required: true, message: '请选择头像', trigger: 'change' }
                   ]
               },
               PhoneRule: { validator: checkPhoneNumberForElement, trigger: 'blur' }, // 电话规则
-              uploadLogoAddress: `${process.env.BASE_API}/signup` // 上传地址
+              uploadLogoAddress: `${process.env.BASE_API}/upload`, // 上传地址
+              imgData: {
+                  accept: 'image/gif, image/jpeg, image/png, image/jpg'
+              }
           };
       },
       components: {
@@ -181,15 +203,26 @@
                       error(res.data.message);
                   }
               });
-              // this.$refs.upload.submit();
+          },
+          add_img(event) {
+              this.form.avator = '';
+              let image = event.target.files[0];
+              let type = image.type;//文件的类型，判断是否是图片
+              let size = image.size;//文件的大小，判断图片的大小
+              if (this.imgData.accept.indexOf(type) === -1) {
+                  error('你选的什么破格式！');
+                  return false;
+              }
+              if (size > 1048580) {
+                  error('最多1M，你选那么大干嘛！');
+                  return false;
+              }
+              let reader = new FileReader();
+              reader.readAsDataURL(image);
+              reader.onload = (e) => {
+                  this.form.avator = e.target.result;
+              };
           }
-          // HeadPlanuploadsuccessLogo (response) {
-          //     success('上传成功');
-          // },
-          // // 删除活动配图
-          // planRemoveLogo (file, index) {
-          //     console.log(file, index);
-          // }
       },
       mounted () {}
   };
